@@ -1,2 +1,0 @@
-tick,idFrom,idTo,isRedirect,description,comment
-,,,,,done
