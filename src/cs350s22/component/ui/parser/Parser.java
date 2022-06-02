@@ -5,7 +5,9 @@ import java.util.Arrays;
 
 public class Parser {
     private String commandText;
+    private A_ParserHelper parserHelper;
     public Parser(A_ParserHelper parserHelper, String commandText) {
+    	this.parserHelper = parserHelper;
         this.commandText = commandText;
     }
 
@@ -18,23 +20,23 @@ public class Parser {
             String argOne = commandTextSplit[1].toUpperCase();
             switch(argOne) {
             case "ACTUATOR": 
-                ActuatorParser actuatorParser = new ActuatorParser(commandTextSplit);
+                ActuatorParser actuatorParser = new ActuatorParser(commandTextSplit, parserHelper);
                 // System.out.println("CREATE ACTUATOR");
                 break;
             case "MAPPER":
-                MapperParser mapperParser = new MapperParser(commandTextSplit);
+                MapperParser mapperParser = new MapperParser(commandTextSplit, parserHelper);
                 // System.out.println("CREATE MAPPER");
                 break;
             case "REPORTER":
-                ReporterParser reporterParser = new ReporterParser(commandTextSplit);
+                ReporterParser reporterParser = new ReporterParser(commandTextSplit, parserHelper);
                 // System.out.println("CREATE REPORTER");
                 break;
             case "SENSOR":
-                SensorParser sensorParser = new SensorParser(commandTextSplit);
+                SensorParser sensorParser = new SensorParser(commandTextSplit, parserHelper);
                 // System.out.println("CREATE SENSOR");
                 break;
             case "WATCHDOG":
-                WatchdogParser watchdogParser = new WatchdogParser(commandTextSplit);
+                WatchdogParser watchdogParser = new WatchdogParser(commandTextSplit, parserHelper);
                 // System.out.println("CREATE WATCHDOG");
                 break;
             default:
