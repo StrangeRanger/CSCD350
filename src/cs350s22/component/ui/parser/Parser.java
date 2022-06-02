@@ -16,22 +16,30 @@ public class Parser {
 
         if (argZero.contains("CREATE")) {
             String argOne = commandTextSplit[1].toUpperCase();
-
-            if (argOne.contains("ACTUATOR")) {
+            switch(argOne) {
+            case "ACTUATOR": 
                 ActuatorParser actuatorParser = new ActuatorParser(commandTextSplit);
                 // System.out.println("CREATE ACTUATOR");
-            } else if (argOne.contains("MAPPER")) {
+                break;
+            case "MAPPER":
                 MapperParser mapperParser = new MapperParser(commandTextSplit);
                 // System.out.println("CREATE MAPPER");
-            } else if (argOne.contains("REPORTER")) {
+                break;
+            case "REPORTER":
                 ReporterParser reporterParser = new ReporterParser(commandTextSplit);
                 // System.out.println("CREATE REPORTER");
-            } else if (argOne.contains("SENSOR")) {
+                break;
+            case "SENSOR":
                 SensorParser sensorParser = new SensorParser(commandTextSplit);
                 // System.out.println("CREATE SENSOR");
-            } else if (argOne.contains("WATCHDOG")) {
+                break;
+            case "WATCHDOG":
                 WatchdogParser watchdogParser = new WatchdogParser(commandTextSplit);
                 // System.out.println("CREATE WATCHDOG");
+                break;
+            default:
+            	System.out.println("INVALID CREATE COMMAND");
+            	break;
             }
         } else if (argZero.contains("SEND")) {
             SendParser sendParser = new SendParser(commandTextSplit);
