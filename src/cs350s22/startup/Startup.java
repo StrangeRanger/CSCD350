@@ -4,28 +4,22 @@ import cs350s22.component.ui.parser.A_ParserHelper;
 import cs350s22.component.ui.parser.Parser;
 import cs350s22.component.ui.parser.ParserHelper;
 
-//=================================================================================================================================================================================
+/** Main class. */
 public class Startup {
     private final A_ParserHelper _parserHelper = new ParserHelper();
 
-    /**
-     *
-     */
-    public Startup() { System.out.println("Welcome to your Startup class"); }
+    // public Startup() { System.out.println("Welcome to your Startup class"); }
 
-    /**
-     *
-     * @param arguments
-     * @throws Exception
-     */
+    /** Main method. */
     public static void main(final String[] arguments) throws Exception {
         Startup startup = new Startup();
 
-        // this command must come first. The filenames do not matter here
+        // This command must come first. The filenames do not matter here.
         startup.parse(
                 "@CONFIGURE LOG \"a.txt\" DOT SEQUENCE \"b.txt\" NETWORK \"c.txt\" XML \"d.txt\"");
 
-        // run your tests like this
+        startup.parse("create button socks");
+        // Run your tests like this.
         startup.parse("@exit");
     }
 

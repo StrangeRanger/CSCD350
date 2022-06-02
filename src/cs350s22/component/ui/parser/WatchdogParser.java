@@ -1,7 +1,9 @@
 package cs350s22.component.ui.parser;
 
-public class WatchdogParser {
-    public WatchdogParser(String[] commandTextSplit, A_ParserHelper parserHelper) {
-
-    }
+/**
+ *
+ */
+public class WatchdogParser implements SubParser {
+    @Override
+    public void parse(String[] commandTextSplit, A_ParserHelper parserHelper) { }
 }

@@ -1,7 +1,9 @@
 package cs350s22.component.ui.parser;
 
-public class MetaParser {
-    public MetaParser(String[] commandTextSplit) {
-
-    }
+/**
+ *
+ */
+public class MetaParser implements SubParser {
+    @Override
+    public void parse(String[] commandTextSplit, A_ParserHelper parserHelper) { }
 }

@@ -3,57 +3,60 @@ package cs350s22.component.ui.parser;
 import java.io.IOException;
 import java.util.Arrays;
 
+/** The main parser class used to interpret commands. */
 public class Parser {
-    private String commandText;
-    private A_ParserHelper parserHelper;
+    private final String         commandText;
+    private final A_ParserHelper parserHelper;
+
+    /**
+     * Constructor.
+     *
+     * @param parserHelper ...
+     * @param commandText  The string of commands to be parsed.
+     */
     public Parser(A_ParserHelper parserHelper, String commandText) {
-    	this.parserHelper = parserHelper;
-        this.commandText = commandText;
+        this.commandText  = commandText;
+        this.parserHelper = parserHelper;
     }
 
+    /**
+     * Parse the first one or two commands/arguments passed by the calling object (set
+     * via the constructor), then initialize and execute the appropriate subParser.
+     */
     public void parse() throws IOException {
+        if (commandText.isBlank()) {
+            throw new IOException("Input was not provided");
+        }
+
         String[] metaCommands     = {"@CLOCK", "@EXIT", "@RUN", "@CONFIGURE"};
         String[] commandTextSplit = commandText.split(" ");
-        String argZero            = commandTextSplit[0].toUpperCase();
+        String    argZero         = commandTextSplit[0].toUpperCase();
+        SubParser subParser;
 
         if (argZero.contains("CREATE")) {
             String argOne = commandTextSplit[1].toUpperCase();
-            switch(argOne) {
-            case "ACTUATOR": 
-                ActuatorParser actuatorParser = new ActuatorParser(commandTextSplit, parserHelper);
-                // System.out.println("CREATE ACTUATOR");
-                break;
-            case "MAPPER":
-                MapperParser mapperParser = new MapperParser(commandTextSplit, parserHelper);
-                // System.out.println("CREATE MAPPER");
-                break;
-            case "REPORTER":
-                ReporterParser reporterParser = new ReporterParser(commandTextSplit, parserHelper);
-                // System.out.println("CREATE REPORTER");
-                break;
-            case "SENSOR":
-                SensorParser sensorParser = new SensorParser(commandTextSplit, parserHelper);
-                // System.out.println("CREATE SENSOR");
-                break;
-            case "WATCHDOG":
-                WatchdogParser watchdogParser = new WatchdogParser(commandTextSplit, parserHelper);
-                // System.out.println("CREATE WATCHDOG");
-                break;
-            default:
-            	System.out.println("INVALID CREATE COMMAND");
-            	break;
+            switch (argOne) {
+                case "ACTUATOR" -> subParser = new ActuatorParser();
+                case "MAPPER" -> subParser = new MapperParser();
+                case "REPORTER" -> subParser = new ReporterParser();
+                case "SENSOR" -> subParser = new SensorParser();
+                case "WATCHDOG" -> subParser = new WatchdogParser();
+                default -> {
+                    System.out.println("Invalid CREATE argument: " + commandTextSplit[1]);
+                    return;
+                }
             }
         } else if (argZero.contains("SEND")) {
-            SendParser sendParser = new SendParser(commandTextSplit);
-            // System.out.println("SEND");
+            subParser = new SendParser();
         } else if (Arrays.asList(metaCommands).contains(argZero)) {
-            MetaParser metaParser = new MetaParser(commandTextSplit);
-            // System.out.println("META");
+            subParser = new MetaParser();
         } else if (argZero.contains("BUILD")) {
-            BuildParser buildParser = new BuildParser(commandTextSplit);
-            // System.out.println("BUILD");
+            subParser = new BuildParser();
         } else {
-            System.out.println("Invalid command provided");
+            System.out.println("Invalid command: " + commandTextSplit[0]);
+            return;
         }
+
+        subParser.parse(commandTextSplit, parserHelper);
     }
 }
