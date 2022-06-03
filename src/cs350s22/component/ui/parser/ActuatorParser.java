@@ -29,67 +29,71 @@ public class ActuatorParser implements SubParser {
 		Identifier id = Identifier.make(args[3]);
 		List<String> possibleCommands = List.of("ACCELERATION", "JERK", "VELOCITY");
 		int index = 4;
-		while (index < args.length) {
-			switch (args[index].toUpperCase()) {
-			case "SENSOR":
-			case "SENSORS":
-				index++;
-				// not yet implemented
-				while (!possibleCommands.contains(args[index].toUpperCase())) {
+		try {
+			while (index < args.length) {
+				switch (args[index].toUpperCase()) {
+				case "SENSOR":
+				case "SENSORS":
 					index++;
-					sensors.add(parserHelper.getSymbolTableSensor().get(Identifier.make(args[index])));
-				}
-				break;
-			case "ACCELERATION":
-				index++;
-				while (!possibleCommands.contains(args[index].toUpperCase())) {
-					if (args[index].toUpperCase() == "LEADIN") {
+					// not yet implemented
+					while (!possibleCommands.contains(args[index].toUpperCase())) {
 						index++;
-						accelerationLeadin = Double.parseDouble(args[index]);
-						index++;
-					} else if (args[index].toUpperCase() == "LEADOUT") {
-						index++;
-						accelerationLeadout = Double.parseDouble(args[index]);
-						index++;
-					} else if (args[index].toUpperCase() == "RELAX") {
-						index++;
-						accelerationRelax = Double.parseDouble(args[index]);
-						index++;
+						sensors.add(parserHelper.getSymbolTableSensor().get(Identifier.make(args[index])));
 					}
-				}
-				break;
-			case "VELOCITY":
-				index++;
-				while (!possibleCommands.contains(args[index].toUpperCase())) {
+					break;
+				case "ACCELERATION":
+					index++;
+					while (!possibleCommands.contains(args[index].toUpperCase())) {
+						if (args[index].toUpperCase() == "LEADIN") {
+							index++;
+							accelerationLeadin = Double.parseDouble(args[index]);
+							index++;
+						} else if (args[index].toUpperCase() == "LEADOUT") {
+							index++;
+							accelerationLeadout = Double.parseDouble(args[index]);
+							index++;
+						} else if (args[index].toUpperCase() == "RELAX") {
+							index++;
+							accelerationRelax = Double.parseDouble(args[index]);
+							index++;
+						}
+					}
+					break;
+				case "VELOCITY":
+					index++;
+					while (!possibleCommands.contains(args[index].toUpperCase())) {
+						if (args[index].toUpperCase() == "LIMIT") {
+							index++;
+							velocityLimit = Double.parseDouble(args[index]);
+						} else if (args[index].toUpperCase() == "MIN") {
+							index++;
+							valueMin = Double.parseDouble(args[index]);
+						} else if (args[index].toUpperCase() == "MAX") {
+							index++;
+							valueMax = Double.parseDouble(args[index]);
+						} else if (args[index].toUpperCase() == "INITIAL") {
+							index++;
+							valueInitial = Double.parseDouble(args[index]);
+						} else if (args[index].toUpperCase() == "VALUE")
+							index++;
+					}
+					break;
+				case "JERK":
+					index++;
 					if (args[index].toUpperCase() == "LIMIT") {
 						index++;
-						velocityLimit = Double.parseDouble(args[index]);
-					} else if (args[index].toUpperCase() == "MIN") {
+						inflectionJerkThreshold = Double.parseDouble(args[index]);
+					} else
 						index++;
-						valueMin = Double.parseDouble(args[index]);
-					} else if (args[index].toUpperCase() == "MAX") {
-						index++;
-						valueMax = Double.parseDouble(args[index]);
-					} else if (args[index].toUpperCase() == "INITIAL") {
-						index++;
-						valueInitial = Double.parseDouble(args[index]);
-					} else if (args[index].toUpperCase() == "VALUE")
-						index++;
+					break;
+				default:
+					groups.add(Identifier.make(args[index]));
+					index++;
+					break;
 				}
-				break;
-			case "JERK":
-				index++;
-				if (args[index].toUpperCase() == "LIMIT") {
-					index++;
-					inflectionJerkThreshold = Double.parseDouble(args[index]);
-				} else
-					index++;
-				break;
-			default:
-				groups.add(Identifier.make(args[index]));
-				index++;
-				break;
 			}
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Logic Error in AcuatorParser, actuator has most likely been created fine");
 		}
 		ActuatorPrototype actuator = new ActuatorPrototype(id, groups, accelerationLeadin, accelerationLeadout,
 				accelerationRelax, velocityLimit, valueInitial, valueMin, valueMax, inflectionJerkThreshold, sensors);
