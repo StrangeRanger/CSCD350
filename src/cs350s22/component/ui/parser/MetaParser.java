@@ -40,11 +40,11 @@ public class MetaParser implements SubParser {
         String argOne = cmdTextSplit[1].toUpperCase();
 
         /// @CLOCK (PAUSE | RESUME)
-        if (argOne.contains("PAUSE") || argOne.contains("RESUME")) {
+        if (argOne.equals("PAUSE") || argOne.equals("RESUME")) {
             setClockState(argOne);
         }
         /// @CLOCK ONESTEP [count]
-        else if (argOne.contains("ONESTEP")) {
+        else if (argOne.equals("ONESTEP")) {
             if (numOfCmdArgs >= 2) {
                 setClockOnestep(Integer.parseInt(cmdTextSplit[2]));
             } else {
@@ -56,7 +56,7 @@ public class MetaParser implements SubParser {
             String argTwo = cmdTextSplit[2].toUpperCase();
 
             /// @CLOCK SET RATE value
-            if (argOne.contains("SET") && argTwo.contains("RATE")) {
+            if (argOne.equals("SET") && argTwo.equals("RATE")) {
                 if (numOfCmdArgs >= 3) {
                     setClockRate(Integer.parseInt(cmdTextSplit[3]));
                 } else {
@@ -64,7 +64,7 @@ public class MetaParser implements SubParser {
                 }
             }
             /// @CLOCK WAIT FOR value
-            else if (argOne.contains("WAIT") && argTwo.contains("FOR")) {
+            else if (argOne.equals("WAIT") && argTwo.equals("FOR")) {
                 if (numOfCmdArgs >= 3) {
                     setClockWaitFor(Double.parseDouble(cmdTextSplit[3]));
                 } else {
@@ -72,7 +72,7 @@ public class MetaParser implements SubParser {
                 }
             }
             /// @CLOCK WAIT UNTIL value
-            else if (argOne.contains("WAIT") && argTwo.contains("UNTIL")) {
+            else if (argOne.equals("WAIT") && argTwo.equals("UNTIL")) {
                 if (numOfCmdArgs >= 3) {
                     setClockWaitUntil(Double.parseDouble(cmdTextSplit[3]));
                 } else {
@@ -98,7 +98,7 @@ public class MetaParser implements SubParser {
      * @param arg The state the clock should be set to.
      */
     private void setClockState(String arg) {
-        Clock.getInstance().isActive(arg.contains("RESUME"));
+        Clock.getInstance().isActive(arg.equals("RESUME"));
     }
 
     /**
@@ -184,13 +184,13 @@ public class MetaParser implements SubParser {
             String cmdArg         = cmdTextSplit[i].toUpperCase();
             String cmdArgPrevious = cmdTextSplit[i - 1].toUpperCase();
 
-            if (cmdArg.contains("LOG")) {
+            if (cmdArg.equals("LOG")) {
                 log = cmdTextSplit[i + 1];
-            } else if (cmdArgPrevious.contains("DOT") && cmdArg.contains("SEQUENCE")) {
+            } else if (cmdArgPrevious.equals("DOT") && cmdArg.equals("SEQUENCE")) {
                 dotSequence = cmdTextSplit[i + 1];
-            } else if (cmdArg.contains("NETWORK")) {
+            } else if (cmdArg.equals("NETWORK")) {
                 network = cmdTextSplit[i + 1];
-            } else if (cmdArg.contains("XML")) {
+            } else if (cmdArg.equals("XML")) {
                 xml = cmdTextSplit[i + 1];
             }
         }
