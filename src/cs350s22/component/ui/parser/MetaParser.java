@@ -32,6 +32,7 @@ public class MetaParser implements SubParser {
 
     /** Parses @CLOCK sub commands, and execute their respective methods. */
     private void setClockHelper() {
+        /// @CLOCK
         if (numOfCmdArgs == 0) {
             displayClock();
             return;
@@ -52,39 +53,25 @@ public class MetaParser implements SubParser {
             }
         }
         /// META commands that require 2 or more arguments.
-        else if (numOfCmdArgs >= 2) {
-            String argTwo = cmdTextSplit[2].toUpperCase();
+        else if (numOfCmdArgs >= 3) {
+            String argTwo   = cmdTextSplit[2].toUpperCase();
+            double argThree = Double.parseDouble(cmdTextSplit[3]);
 
             /// @CLOCK SET RATE value
             if (argOne.equals("SET") && argTwo.equals("RATE")) {
-                if (numOfCmdArgs >= 3) {
-                    setClockRate(Integer.parseInt(cmdTextSplit[3]));
-                } else {
-                    System.out.println("Missing argument for @CLOCK SET RATE");
-                }
+                setClockRate(Integer.parseInt(cmdTextSplit[3]));
             }
             /// @CLOCK WAIT FOR value
             else if (argOne.equals("WAIT") && argTwo.equals("FOR")) {
-                if (numOfCmdArgs >= 3) {
-                    setClockWaitFor(Double.parseDouble(cmdTextSplit[3]));
-                } else {
-                    System.out.println("Missing argument for @CLOCK WAIT FOR");
-                }
+                setClockWaitFor(argThree);
             }
             /// @CLOCK WAIT UNTIL value
             else if (argOne.equals("WAIT") && argTwo.equals("UNTIL")) {
-                if (numOfCmdArgs >= 3) {
-                    setClockWaitUntil(Double.parseDouble(cmdTextSplit[3]));
-                } else {
-                    System.out.println("Missing argument for @CLOCK WAIT UNTIL");
-                }
+                setClockWaitUntil(argThree);
             } else {
-                System.out.println("Invalid arguments for @CLOCK: " + argOne + " "
-                                   + argTwo);
+                System.out.println("Invalid or missing arguments for @CLOCK");
             }
-        }
-        /// Anything else.
-        else {
+        } else {
             System.out.println("Invalid argument for @CLOCK: " + argOne);
         }
     }
@@ -200,8 +187,8 @@ public class MetaParser implements SubParser {
             LoggerMessageSequencing.initialize(Filespec.make(dotSequence),
                                                Filespec.make(network));
         } else {
-            throw new IOException(
-                    "One or more required arguments is either missing or incorrect for @CONFIGURE");
+            throw new IOException("One or more required arguments is either missing "
+                                  + "or incorrect for @CONFIGURE");
         }
     }
 }
