@@ -8,8 +8,6 @@ import cs350s22.component.ui.parser.ParserHelper;
 public class Startup {
     private final A_ParserHelper _parserHelper = new ParserHelper();
 
-    // public Startup() { System.out.println("Welcome to your Startup class"); }
-
     /** Main method. */
     public static void main(final String[] arguments) throws Exception {
         Startup startup = new Startup();
@@ -18,7 +16,6 @@ public class Startup {
         startup.parse(
                 "@CONFIGURE LOG \"a.txt\" DOT SEQUENCE \"b.txt\" NETWORK \"c.txt\" XML \"d.txt\"");
 
-        startup.parse("create button socks");
         // Run your tests like this.
         startup.parse("@exit");
     }
