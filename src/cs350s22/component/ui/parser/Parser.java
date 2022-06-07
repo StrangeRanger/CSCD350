@@ -1,7 +1,11 @@
 package cs350s22.component.ui.parser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** The main parser class used to interpret commands. */
 public class Parser {
@@ -29,7 +33,7 @@ public class Parser {
         }
 
         String[] metaCommands     = {"@CLOCK", "@EXIT", "@RUN", "@CONFIGURE"};
-        String[] commandTextSplit = commandText.split(" ");
+        String[] commandTextSplit = commandText.replace("\"", "").split(" ");
         String    argZero         = commandTextSplit[0].toUpperCase();
         SubParser subParser;
 
