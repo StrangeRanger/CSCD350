@@ -142,8 +142,7 @@ public class MetaParser implements SubParser {
      * be complete.
      */
     private void exit() {
-        // parserHelper.exit(); // TODO: Uncomment when ready...
-        System.exit(0);
+        parserHelper.exit();
     }
 
     /** Loads and runs the script in fully qualified filename string. */
