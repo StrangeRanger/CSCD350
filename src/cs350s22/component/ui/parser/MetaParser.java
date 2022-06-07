@@ -8,23 +8,22 @@ import java.io.IOException;
 
 /** META command class. */
 public class MetaParser implements SubParser {
-    String[] cmdTextSplit;
-    int            numOfCmdArgs;
-    A_ParserHelper parserHelper;
+    private String[] args;
+    private int            numOfCmdArgs;
+    private A_ParserHelper parserHelper;
 
     @Override
-    public void parse(String[] cmdTextSplit, A_ParserHelper parserHelper)
-            throws IOException {
-        this.cmdTextSplit = cmdTextSplit;
-        this.numOfCmdArgs = cmdTextSplit.length - 1;
+    public void parse(String[] args, A_ParserHelper parserHelper) throws IOException {
+        this.args         = args;
+        this.numOfCmdArgs = args.length - 1;
         this.parserHelper = parserHelper;
 
-        switch (cmdTextSplit[0].toUpperCase()) {
+        switch (args[0].toUpperCase()) {
             case "@CLOCK" -> setClockHelper();
             case "@EXIT" -> exit();
             case "@RUN" -> run();
             case "@CONFIGURE" -> configure();
-            default -> System.out.println("Invalid META command: " + cmdTextSplit[0]);
+            default -> System.out.println("Invalid META command: " + args[0]);
         }
     }
 
@@ -38,7 +37,7 @@ public class MetaParser implements SubParser {
             return;
         }
 
-        String argOne = cmdTextSplit[1].toUpperCase();
+        String argOne = args[1].toUpperCase();
 
         /// @CLOCK (PAUSE | RESUME)
         if (argOne.equals("PAUSE") || argOne.equals("RESUME")) {
@@ -47,19 +46,19 @@ public class MetaParser implements SubParser {
         /// @CLOCK ONESTEP [count]
         else if (argOne.equals("ONESTEP")) {
             if (numOfCmdArgs >= 2) {
-                setClockOnestep(Integer.parseInt(cmdTextSplit[2]));
+                setClockOnestep(Integer.parseInt(args[2]));
             } else {
                 setClockOnestep();
             }
         }
         /// META commands that require 2 or more arguments.
         else if (numOfCmdArgs >= 3) {
-            String argTwo   = cmdTextSplit[2].toUpperCase();
-            double argThree = Double.parseDouble(cmdTextSplit[3]);
+            String argTwo   = args[2].toUpperCase();
+            double argThree = Double.parseDouble(args[3]);
 
             /// @CLOCK SET RATE value
             if (argOne.equals("SET") && argTwo.equals("RATE")) {
-                setClockRate(Integer.parseInt(cmdTextSplit[3]));
+                setClockRate(Integer.parseInt(args[3]));
             }
             /// @CLOCK WAIT FOR value
             else if (argOne.equals("WAIT") && argTwo.equals("FOR")) {
@@ -116,9 +115,9 @@ public class MetaParser implements SubParser {
     /**
      * Sets the clock rate value in milliseconds per update.
      *
-     * @param rate The rate for which the clock should be set to.
+     * @param value The rate for which the clock should be set to.
      */
-    private void setClockRate(int rate) { Clock.getInstance().setRate(rate); }
+    private void setClockRate(int value) { Clock.getInstance().setRate(value); }
 
     /**
      * Waits for value seconds before processing the next command.
@@ -150,7 +149,7 @@ public class MetaParser implements SubParser {
     /** Loads and runs the script in fully qualified filename string. */
     private void run() {
         try {
-            parserHelper.run(cmdTextSplit[1]);
+            parserHelper.run(args[1]);
         } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -168,17 +167,17 @@ public class MetaParser implements SubParser {
         /// NOTE: The for statement only goes up to the second to last index in array on
         //        purpose. It's not a typo or mistake.
         for (int i = 1; i < numOfCmdArgs; i++) {
-            String cmdArg         = cmdTextSplit[i].toUpperCase();
-            String cmdArgPrevious = cmdTextSplit[i - 1].toUpperCase();
+            String cmdArg         = args[i].toUpperCase();
+            String cmdArgPrevious = args[i - 1].toUpperCase();
 
             if (cmdArg.equals("LOG")) {
-                log = cmdTextSplit[i + 1];
+                log = args[i + 1];
             } else if (cmdArgPrevious.equals("DOT") && cmdArg.equals("SEQUENCE")) {
-                dotSequence = cmdTextSplit[i + 1];
+                dotSequence = args[i + 1];
             } else if (cmdArg.equals("NETWORK")) {
-                network = cmdTextSplit[i + 1];
+                network = args[i + 1];
             } else if (cmdArg.equals("XML")) {
-                xml = cmdTextSplit[i + 1];
+                xml = args[i + 1];
             }
         }
 
