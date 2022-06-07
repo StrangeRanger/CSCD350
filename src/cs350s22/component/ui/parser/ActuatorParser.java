@@ -24,16 +24,13 @@ public class ActuatorParser implements SubParser {
 		double valueMax = 0;
 		double inflectionJerkThreshold = 0;
 		String actuatorType = args[2].toUpperCase();
-		if (actuatorType != "LINEAR" || actuatorType != "ROTARY")
-			System.out.println("INVALID ACTUATOR TYPE");
 		Identifier id = Identifier.make(args[3]);
 		List<String> possibleCommands = List.of("ACCELERATION", "JERK", "VELOCITY");
 		int index = 4;
 		try {
 			while (index < args.length) {
 				switch (args[index].toUpperCase()) {
-				case "SENSOR":
-				case "SENSORS":
+				case "SENSOR", "SENSORS":
 					index++;
 					// not yet implemented
 					while (!possibleCommands.contains(args[index].toUpperCase())) {
@@ -44,15 +41,15 @@ public class ActuatorParser implements SubParser {
 				case "ACCELERATION":
 					index++;
 					while (!possibleCommands.contains(args[index].toUpperCase())) {
-						if (args[index].toUpperCase() == "LEADIN") {
+						if (args[index].toUpperCase().equals("LEADIN")) {
 							index++;
 							accelerationLeadin = Double.parseDouble(args[index]);
 							index++;
-						} else if (args[index].toUpperCase() == "LEADOUT") {
+						} else if (args[index].toUpperCase().equals("LEADOUT")) {
 							index++;
 							accelerationLeadout = Double.parseDouble(args[index]);
 							index++;
-						} else if (args[index].toUpperCase() == "RELAX") {
+						} else if (args[index].toUpperCase().equals("RELAX")) {
 							index++;
 							accelerationRelax = Double.parseDouble(args[index]);
 							index++;
@@ -62,25 +59,25 @@ public class ActuatorParser implements SubParser {
 				case "VELOCITY":
 					index++;
 					while (!possibleCommands.contains(args[index].toUpperCase())) {
-						if (args[index].toUpperCase() == "LIMIT") {
+						if (args[index].toUpperCase().equals("LIMIT")) {
 							index++;
 							velocityLimit = Double.parseDouble(args[index]);
-						} else if (args[index].toUpperCase() == "MIN") {
+						} else if (args[index].toUpperCase().equals("MIN")) {
 							index++;
 							valueMin = Double.parseDouble(args[index]);
-						} else if (args[index].toUpperCase() == "MAX") {
+						} else if (args[index].toUpperCase().equals("MAX")) {
 							index++;
 							valueMax = Double.parseDouble(args[index]);
-						} else if (args[index].toUpperCase() == "INITIAL") {
+						} else if (args[index].toUpperCase().equals("INITIAL")) {
 							index++;
 							valueInitial = Double.parseDouble(args[index]);
-						} else if (args[index].toUpperCase() == "VALUE")
+						} else if (args[index].toUpperCase().equals("VALUE"))
 							index++;
 					}
 					break;
 				case "JERK":
 					index++;
-					if (args[index].toUpperCase() == "LIMIT") {
+					if (args[index].toUpperCase().equals("LIMIT")) {
 						index++;
 						inflectionJerkThreshold = Double.parseDouble(args[index]);
 					} else
