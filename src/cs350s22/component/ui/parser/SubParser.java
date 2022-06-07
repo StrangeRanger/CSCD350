@@ -8,9 +8,7 @@ import java.io.IOException;
 public interface SubParser {
     /**
      *
-     * @param commandTextSplit
-     * @param parserHelper
+     * @throws IOException
      */
-    void parse(String[] commandTextSplit, A_ParserHelper parserHelper)
-            throws IOException;
+    void parse() throws IOException;
 }

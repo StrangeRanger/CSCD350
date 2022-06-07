@@ -8,16 +8,19 @@ import java.io.IOException;
 
 /** META command class. */
 public class MetaParser implements SubParser {
-    private String[] args;
-    private int            numOfCmdArgs;
-    private A_ParserHelper parserHelper;
+    private final String[]       args;
+    private final A_ParserHelper parserHelper;
+    private final int            numOfCmdArgs;
+
+    /** Constructor. */
+    public MetaParser(String[] args, A_ParserHelper parserHelper) {
+        this.args         = args;
+        this.parserHelper = parserHelper;
+        this.numOfCmdArgs = args.length - 1;
+    }
 
     @Override
-    public void parse(String[] args, A_ParserHelper parserHelper) throws IOException {
-        this.args         = args;
-        this.numOfCmdArgs = args.length - 1;
-        this.parserHelper = parserHelper;
-
+    public void parse() throws IOException {
         switch (args[0].toUpperCase()) {
             case "@CLOCK" -> setClockHelper();
             case "@EXIT" -> exit();

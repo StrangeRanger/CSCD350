@@ -32,35 +32,35 @@ public class Parser {
             throw new IOException("Input was not provided");
         }
 
-        String[] metaCommands     = {"@CLOCK", "@EXIT", "@RUN", "@CONFIGURE"};
-        String[] commandTextSplit = commandText.replace("\"", "").split(" ");
-        String    argZero         = commandTextSplit[0].toUpperCase();
+        String[] metaCommands = {"@CLOCK", "@EXIT", "@RUN", "@CONFIGURE"};
+        String[] args         = commandText.replace("\"", "").split(" ");
+        String    argZero     = args[0].toUpperCase();
         SubParser subParser;
 
         if (argZero.contains("CREATE")) {
-            String argOne = commandTextSplit[1].toUpperCase();
+            String argOne = args[1].toUpperCase();
             switch (argOne) {
-                case "ACTUATOR" -> subParser = new ActuatorParser();
-                case "MAPPER" -> subParser = new MapperParser();
-                case "REPORTER" -> subParser = new ReporterParser();
-                case "SENSOR" -> subParser = new SensorParser();
-                case "WATCHDOG" -> subParser = new WatchdogParser();
+                case "ACTUATOR" -> subParser = new ActuatorParser(args, parserHelper);
+                case "MAPPER"   -> subParser = new MapperParser(args, parserHelper);
+                case "REPORTER" -> subParser = new ReporterParser(args, parserHelper);
+                case "SENSOR"   -> subParser = new SensorParser(args, parserHelper);
+                case "WATCHDOG" -> subParser = new WatchdogParser(args, parserHelper);
                 default -> {
-                    System.out.println("Invalid CREATE argument: " + commandTextSplit[1]);
+                    System.out.println("Invalid CREATE argument: " + args[1]);
                     return;
                 }
             }
         } else if (argZero.contains("SEND")) {
-            subParser = new SendParser();
+            subParser = new SendParser(args, parserHelper);
         } else if (Arrays.asList(metaCommands).contains(argZero)) {
-            subParser = new MetaParser();
+            subParser = new MetaParser(args, parserHelper);
         } else if (argZero.contains("BUILD")) {
-            subParser = new BuildParser();
+            subParser = new BuildParser(args, parserHelper);
         } else {
-            System.out.println("Invalid command: " + commandTextSplit[0]);
+            System.out.println("Invalid command: " + args[0]);
             return;
         }
 
-        subParser.parse(commandTextSplit, parserHelper);
+        subParser.parse();
     }
 }
