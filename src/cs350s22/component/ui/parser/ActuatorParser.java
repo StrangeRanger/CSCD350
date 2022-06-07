@@ -30,8 +30,7 @@ public class ActuatorParser implements SubParser {
 		try {
 			while (index < args.length) {
 				switch (args[index].toUpperCase()) {
-				case "SENSOR":
-				case "SENSORS":
+				case "SENSOR", "SENSORS":
 					index++;
 					// not yet implemented
 					while (!possibleCommands.contains(args[index].toUpperCase())) {
