@@ -1,7 +1,8 @@
 package cs350s22.component.ui.parser;
 
 /**
- *
+ * Watchdog commands are responsible for monitoring the value of a sensor and reporting
+ * whether constraints are violated.
  */
 public class WatchdogParser implements SubParser {
     private final String[]       args;

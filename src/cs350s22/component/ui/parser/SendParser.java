@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Message commands are responsible for sending messages from the master controller at
+ * the top-level network to its components or components in subnetworks.
  *
+ * ...
  */
 public class SendParser implements SubParser {
     private final String[]       args;
@@ -25,7 +28,7 @@ public class SendParser implements SubParser {
     @Override
     public void parse() {
         // Check if sending a message
-        if (! args[1].toUpperCase().equals("MESSAGE")) {
+        if (! args[1].equalsIgnoreCase("MESSAGE")) {
             return;
         }
 
@@ -44,14 +47,14 @@ public class SendParser implements SubParser {
                     break;
                 case "ID":
                     index++;
-                    ids = new ArrayList<Identifier>();
+                    ids = new ArrayList<>();
                     while (! possibleCommands.contains(args[index])) {
                         ids.add(Identifier.make(args[index]));
                         index++;
                     }
                 case "GROUPS":
                     index++;
-                    groups = new ArrayList<Identifier>();
+                    groups = new ArrayList<>();
                     while (! possibleCommands.contains(args[index])) {
                         groups.add(Identifier.make(args[index]));
                         index++;
@@ -59,7 +62,7 @@ public class SendParser implements SubParser {
                 case "POSITION":
                     index++;
                     A_Message message;
-                    if (args[index].toUpperCase().equals("REQUEST")) {
+                    if (args[index].equalsIgnoreCase("REQUEST")) {
                         index++;
                         value = Double.parseDouble(args[index]);
                         if (ids != null) {

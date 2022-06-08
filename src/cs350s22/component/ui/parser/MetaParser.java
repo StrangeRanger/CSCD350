@@ -6,7 +6,10 @@ import cs350s22.support.Clock;
 import cs350s22.support.Filespec;
 import java.io.IOException;
 
-/** META command class. */
+/**
+ * Meta commands are responsible for configuring and manipulating the architecture
+ * itself, not the network it is executing.
+ */
 public class MetaParser implements SubParser {
     private final String[]       args;
     private final A_ParserHelper parserHelper;
@@ -161,13 +164,13 @@ public class MetaParser implements SubParser {
      * Defines where the output goes for logging and reporting. This must be the first
      * command issued.
      *
-     * @throws IOException <-- TODO: Define argument
+     * @throws IOException ...
      */
     private void configure() throws IOException {
         String log = null, dotSequence = null, network = null, xml = null;
 
         /// NOTE: The for statement only goes up to the second to last index in array on
-        //        purpose. It's not a typo or mistake.
+        ///       purpose. It's not a typo or mistake.
         for (int i = 1; i < numOfCmdArgs; i++) {
             String cmdArg         = args[i].toUpperCase();
             String cmdArgPrevious = args[i - 1].toUpperCase();

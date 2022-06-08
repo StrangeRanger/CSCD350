@@ -6,6 +6,12 @@ import cs350s22.test.ActuatorPrototype;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The actuator command is responsible for creating an actuator and optionally
+ * connecting sensors to it.
+ *
+ * ...
+ */
 public class ActuatorParser implements SubParser {
 	private final String[]       args;
     private final A_ParserHelper parserHelper;
@@ -21,8 +27,8 @@ public class ActuatorParser implements SubParser {
         // Provided arguments start at commandTextSplit[2], type of actuator guaranteed
         // to be first argument, id the second
         // initialize all variables
-        List<Identifier> groups                  = new ArrayList<Identifier>();
-        List<A_Sensor>   sensors                 = new ArrayList<A_Sensor>();
+        List<Identifier> groups                  = new ArrayList<>();
+        List<A_Sensor>   sensors                 = new ArrayList<>();
         double           accelerationLeadin      = 0;
         double           accelerationLeadout     = 0;
         double           accelerationRelax       = 0;
@@ -32,7 +38,6 @@ public class ActuatorParser implements SubParser {
         double           valueMax                = 0;
         double           inflectionJerkThreshold = 0;
         int              index                   = 4;
-        String           actuatorType            = args[2].toUpperCase();
         Identifier       id                      = Identifier.make(args[3]);
         List<String>     possibleCommands = List.of("ACCELERATION", "JERK", "VELOCITY");
 
@@ -51,15 +56,15 @@ public class ActuatorParser implements SubParser {
                     case "ACCELERATION":
                         index++;
                         while (! possibleCommands.contains(args[index].toUpperCase())) {
-                            if (args[index].toUpperCase().equals("LEADIN")) {
+                            if (args[index].equalsIgnoreCase("LEADIN")) {
                                 index++;
                                 accelerationLeadin = Double.parseDouble(args[index]);
                                 index++;
-                            } else if (args[index].toUpperCase().equals("LEADOUT")) {
+                            } else if (args[index].equalsIgnoreCase("LEADOUT")) {
                                 index++;
                                 accelerationLeadout = Double.parseDouble(args[index]);
                                 index++;
-                            } else if (args[index].toUpperCase().equals("RELAX")) {
+                            } else if (args[index].equalsIgnoreCase("RELAX")) {
                                 index++;
                                 accelerationRelax = Double.parseDouble(args[index]);
                                 index++;
@@ -69,25 +74,25 @@ public class ActuatorParser implements SubParser {
                     case "VELOCITY":
                         index++;
                         while (! possibleCommands.contains(args[index].toUpperCase())) {
-                            if (args[index].toUpperCase().equals("LIMIT")) {
+                            if (args[index].equalsIgnoreCase("LIMIT")) {
                                 index++;
                                 velocityLimit = Double.parseDouble(args[index]);
-                            } else if (args[index].toUpperCase().equals("MIN")) {
+                            } else if (args[index].equalsIgnoreCase("MIN")) {
                                 index++;
                                 valueMin = Double.parseDouble(args[index]);
-                            } else if (args[index].toUpperCase().equals("MAX")) {
+                            } else if (args[index].equalsIgnoreCase("MAX")) {
                                 index++;
                                 valueMax = Double.parseDouble(args[index]);
-                            } else if (args[index].toUpperCase().equals("INITIAL")) {
+                            } else if (args[index].equalsIgnoreCase("INITIAL")) {
                                 index++;
                                 valueInitial = Double.parseDouble(args[index]);
-                            } else if (args[index].toUpperCase().equals("VALUE"))
+                            } else if (args[index].equalsIgnoreCase("VALUE"))
                                 index++;
                         }
                         break;
                     case "JERK":
                         index++;
-                        if (args[index].toUpperCase().equals("LIMIT")) {
+                        if (args[index].equalsIgnoreCase("LIMIT")) {
                             index++;
                             inflectionJerkThreshold = Double.parseDouble(args[index]);
                         } else
@@ -102,11 +107,11 @@ public class ActuatorParser implements SubParser {
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Logic Error in AcuatorParser, actuator has most likely been created fine");
         }
+
         ActuatorPrototype actuator = new ActuatorPrototype(id, groups, accelerationLeadin,
 													       accelerationLeadout, accelerationRelax,
 													       velocityLimit, valueInitial, valueMin, valueMax,
 													       inflectionJerkThreshold, sensors);
-
         parserHelper.getSymbolTableActuator().add(id, actuator);
     }
 }

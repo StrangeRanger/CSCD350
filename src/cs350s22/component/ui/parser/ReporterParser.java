@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/** REPORTER command class. */
+/**
+ * Reporter commands are responsible for creating reporters. The job of a reporter is to
+ * inform recipients of the value of a sensor based on a trigger event.
+ */
 public class ReporterParser implements SubParser {
     private final String[]       args;
     private final A_ParserHelper parserHelper;

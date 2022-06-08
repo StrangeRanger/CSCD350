@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The network command is responsible for creating the top-level network from actuators,
+ * sensors, and/or controllers. The network is the top-level network.
  *
+ * ...
  */
 public class BuildParser implements SubParser {
     private final String[]       args;
@@ -21,7 +24,7 @@ public class BuildParser implements SubParser {
     @Override
     public void parse() {
         int               index      = 1;
-        List<A_Component> components = new ArrayList<A_Component>();
+        List<A_Component> components = new ArrayList<>();
 
         if (args[index].equalsIgnoreCase("NETWORK")) {
             index = 4;
@@ -33,11 +36,11 @@ public class BuildParser implements SubParser {
                     index++;
                     if (index < args.length) {
                         components.add(parserHelper.getSymbolTableSensor().get(Identifier.make(args[index])));
-                        index++;
                     }
                 }
             }
         }
+
         parserHelper.getControllerMaster().addComponents(components);
         parserHelper.getNetwork().writeOutput();
     }

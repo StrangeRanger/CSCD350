@@ -109,8 +109,10 @@ public class MapperParser implements SubParser {
     }
 
     /**
+     * Creates mapper id that does not remap the raw value. This is equivalent to CREATE
+     * MAPPER id EQUATION SCALE 1.
      *
-     * @param id
+     * @param id ...
      */
     private void passthroughEquation(Identifier id) {
         EquationPassthrough newMapper      = new EquationPassthrough();
@@ -119,9 +121,10 @@ public class MapperParser implements SubParser {
     }
 
     /**
+     * Creates mapper id that remaps the raw value by the linear coefficient value.
      *
-     * @param id
-     * @param value
+     * @param id    ...
+     * @param value ...
      */
     private void scaleEquation(Identifier id, int value) {
         EquationScaled newMapper      = new EquationScaled(value);
@@ -130,10 +133,12 @@ public class MapperParser implements SubParser {
     }
 
     /**
+     * Creates mapper id that remaps the raw value onto a percentage scale as defined by
+     * the lower limit valueOne and upper limit valueTwo.
      *
-     * @param id
-     * @param valueOne
-     * @param valueTwo
+     * @param id       ...
+     * @param valueOne ...
+     * @param valueTwo ...
      */
     private void normalizeEquation(Identifier id, int valueOne, int valueTwo) {
         EquationNormalized newMapper      = new EquationNormalized(valueOne, valueTwo);
@@ -142,10 +147,15 @@ public class MapperParser implements SubParser {
     }
 
     /**
+     * Creates mapper id that remaps the raw value based on the comma-delimited
+     * interpolation table defined in string. Each row defines a point in the
+     * two-dimensional graph. The first value is the raw sensor value; the second is its
+     * mapped value. LINEAR mode does linear interpolation; SPLINE does a smoother
+     * nonlinear interpolation.
      *
-     * @param id
-     * @param filename
-     * @throws IOException
+     * @param id           ...
+     * @param filename     ...
+     * @throws IOException ...
      */
     private void linearInterpolation(Identifier id, Filespec filename)
             throws IOException {
@@ -156,10 +166,15 @@ public class MapperParser implements SubParser {
     }
 
     /**
+     * Creates mapper id that remaps the raw value based on the comma-delimited
+     * interpolation table defined in string. Each row defines a point in the
+     * two-dimensional graph. The first value is the raw sensor value; the second is its
+     * mapped value. LINEAR mode does linear interpolation; SPLINE does a smoother
+     * nonlinear interpolation.
      *
-     * @param id
-     * @param filename
-     * @throws IOException
+     * @param id           ...
+     * @param filename     ...
+     * @throws IOException ...
      */
     private void splineInterpolation(Identifier id, Filespec filename)
             throws IOException {

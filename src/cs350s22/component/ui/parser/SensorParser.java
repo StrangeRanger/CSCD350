@@ -1,7 +1,8 @@
 package cs350s22.component.ui.parser;
 
 /**
- *
+ * The sensor command is responsible for creating a sensor with optional reporters,
+ * optional watchdogs, and an optional mapper.
  */
 public class SensorParser implements SubParser {
     private final String[]       args;
