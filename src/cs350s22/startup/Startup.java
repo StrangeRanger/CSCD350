@@ -13,13 +13,15 @@ public class Startup {
 		Startup startup = new Startup();
 
 		// This command must come first. The filenames do not matter here.
-
-		// Run your tests like this.
 		startup.parse("@CONFIGURE LOG \"a.txt\" DOT SEQUENCE \"b.txt\" NETWORK \"c.txt\" XML \"d.txt\"");
+		// Run your tests like this.
 
 		startup.parse(
-				"CREATE ACTUATOR LINEAR a1 ACCELERATION LEADIN 0.1 LEADOUT -0.2 RELAX 0.3 VELOCITY LIMIT 5 VALUE MIN 1 MAX 20 INITIAL 2 JERK LIMIT 3");
-		// startup.parse("SEND MESSAGE PING");
+				"CREATE ACTUATOR LINEAR myactuator1 ACCELERATION LEADIN 0.1 LEADOUT -0.2 RELAX 0.3 VELOCITY LIMIT 5 VALUE MIN 1 MAX 20 INITIAL 2 JERK LIMIT 3");
+		startup.parse("CREATE CONTROLLER FORWARDING mycontroller1 WITH COMPONENTS a1");
+		startup.parse("BUILD NETWORK WITH COMPONENT c1 a1");
+		startup.parse("SEND MESSAGE PING");
+
 		startup.parse("@exit");
 	}
 

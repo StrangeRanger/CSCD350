@@ -2,3 +2,4 @@ Test A.1: Basic Actuator Creation
 	1. This test is to verify that the ActuatorParser is properly parsing the command and creating an actuator. This will help us in assuring that the actuator is created and actually has the correct parameters.
 	2. There is no Actuator created and no other objects should affect the creation of a new actuator.
 	3.	"CREATE ACTUATOR LINEAR a1 ACCELERATION LEADIN 0.1 LEADOUT -0.2 RELAX 0.3 VELOCITY LIMIT 5 VALUE MIN 1 MAX 20 INITIAL 2 JERK LIMIT 3"
+	4. There should be a created actuator that can be referenced, and can be seen to be functioning as expected.
