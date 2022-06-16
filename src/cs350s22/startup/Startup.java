@@ -13,7 +13,8 @@ public class Startup {
         Startup startup = new Startup();
 
         // This command must come first. The filenames do not matter here.
-        startup.parse("@CONFIGURE LOG \"a.txt\" DOT SEQUENCE \"b.txt\" NETWORK \"c.txt\" XML \"d.txt\"");
+        startup.parse("@CONFIGURE LOG \"a.txt\" DOT SEQUENCE \"b.txt\" NETWORK "
+                      + "\"c.txt\" XML \"d.txt\"");
 
         // Run your tests like this.
         startup.parse("@exit");

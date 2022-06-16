@@ -14,8 +14,6 @@ import cs350s22.support.Identifier;
  * Message commands are responsible for sending messages from the master
  * controller at the top-level network to its components or components in
  * subnetworks.
- *
- * ...
  */
 public class SendParser implements SubParser {
 	private final String[] args;

@@ -10,8 +10,6 @@ import cs350s22.test.ActuatorPrototype;
 /**
  * The actuator command is responsible for creating an actuator and optionally
  * connecting sensors to it.
- *
- * ...
  */
 public class ActuatorParser implements SubParser {
 	private final String[] args;
