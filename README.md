@@ -8,3 +8,4 @@ Assignment information:
   - Samuel S.
   - Tom D.
 - [Assignment instructions](cs350-task-P2.pdf)
+- [Javadocs](https://strangeranger.github.io/CSCD350/)
