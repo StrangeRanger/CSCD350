@@ -11,7 +11,7 @@ import java.io.IOException;
  * itself, not the network it is executing.
  */
 public class MetaParser implements SubParser {
-    private final String[]       args;
+    private final                String[] args;
     private final A_ParserHelper parserHelper;
     private final int            numOfCmdArgs;
 
@@ -25,18 +25,22 @@ public class MetaParser implements SubParser {
     @Override
     public void parse() throws IOException {
         switch (args[0].toUpperCase()) {
-            case "@CLOCK" -> setClockHelper();
-            case "@EXIT" -> exit();
-            case "@RUN" -> run();
+            case "@CLOCK"     -> setClockHelper();
+            case "@EXIT"      -> exit();
+            case "@RUN"       -> run();
             case "@CONFIGURE" -> configure();
-            default -> System.out.println("Invalid META command: " + args[0]);
+            default -> throw new IOException("Invalid META command: " + args[0]);
         }
     }
 
     ////[ Clock Methods ]///////////////////////////////////////////////////////////////
 
-    /** Parses @CLOCK sub commands, and execute their respective methods. */
-    private void setClockHelper() {
+    /**
+     * Parses @CLOCK sub commands, and execute their respective methods.
+     *
+     * @throws IOException Invalid input.
+     */
+    private void setClockHelper() throws IOException {
         /// @CLOCK
         if (numOfCmdArgs == 0) {
             displayClock();
@@ -52,9 +56,9 @@ public class MetaParser implements SubParser {
         /// @CLOCK ONESTEP [count]
         else if (argOne.equals("ONESTEP")) {
             if (numOfCmdArgs >= 2) {
-                setClockOnestep(Integer.parseInt(args[2]));
+                setClockOneStep(Integer.parseInt(args[2]));
             } else {
-                setClockOnestep();
+                setClockOneStep();
             }
         }
         /// META commands that require 2 or more arguments.
@@ -74,10 +78,10 @@ public class MetaParser implements SubParser {
             else if (argOne.equals("WAIT") && argTwo.equals("UNTIL")) {
                 setClockWaitUntil(argThree);
             } else {
-                System.out.println("Invalid or missing arguments for @CLOCK");
+                throw new IOException("Invalid or missing arguments for @CLOCK");
             }
         } else {
-            System.out.println("Invalid argument for @CLOCK: " + argOne);
+            throw new IOException("Invalid argument for @CLOCK: " + argOne);
         }
     }
 
@@ -97,7 +101,7 @@ public class MetaParser implements SubParser {
      * Updates the clock manually one time. This is valid only while the clock is
      * paused.
      */
-    private void setClockOnestep() {
+    private void setClockOneStep() {
         if (Clock.getInstance().isActive()) {
             System.out.println("Clock must be paused to use this command");
         } else {
@@ -108,13 +112,13 @@ public class MetaParser implements SubParser {
     /**
      * Updates the clock 'count' times. This is valid only while the clock is paused.
      *
-     * @param onestep The amount to update the clock by.
+     * @param oneStep The amount to update the clock by.
      */
-    private void setClockOnestep(int onestep) {
+    private void setClockOneStep(int oneStep) {
         if (Clock.getInstance().isActive()) {
             System.out.println("Clock must be paused to use this command");
         } else {
-            Clock.getInstance().onestep(onestep);
+            Clock.getInstance().onestep(oneStep);
         }
     }
 
@@ -147,9 +151,7 @@ public class MetaParser implements SubParser {
      * Exits the system. This must be the last statement; otherwise, log files may not
      * be complete.
      */
-    private void exit() {
-        parserHelper.exit();
-    }
+    private void exit() { parserHelper.exit(); }
 
     /** Loads and runs the script in fully qualified filename string. */
     private void run() {
@@ -164,7 +166,7 @@ public class MetaParser implements SubParser {
      * Defines where the output goes for logging and reporting. This must be the first
      * command issued.
      *
-     * @throws IOException ...
+     * @throws IOException Invalid input.
      */
     private void configure() throws IOException {
         String log = null, dotSequence = null, network = null, xml = null;

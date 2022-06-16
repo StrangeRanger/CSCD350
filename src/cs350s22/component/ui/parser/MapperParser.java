@@ -18,7 +18,7 @@ import java.util.HashMap;
  * reported directly by a sensor.
  */
 public class MapperParser implements SubParser {
-    private final String[]       args;
+    private final                String[] args;
     private final A_ParserHelper parserHelper;
     private final int            numOfCmdArgs;
 
@@ -32,8 +32,7 @@ public class MapperParser implements SubParser {
     @Override
     public void parse() throws IOException {
         if (numOfCmdArgs < 3) {
-            System.out.println("Invalid or missing arguments for CREATE MAPPER");
-            return;
+            throw new IOException("Invalid or missing arguments for CREATE MAPPER");
         }
 
         Identifier              id  = Identifier.make(args[2]);
@@ -42,35 +41,41 @@ public class MapperParser implements SubParser {
         });
 
         switch (map.get("mapType")) {
+            /// CREATE MAPPER id EQUATION PASSTHROUGH
             case "EQUATION_PASSTHROUGH":
-                passthroughEquation(id);
+                passThroughEquation(id);
                 break;
+            /// CREATE MAPPER id EQUATION SCALE value
             case "EQUATION_SCALE":
                 scaleEquation(id, Integer.parseInt(map.get("mapTypeValueOne")));
                 break;
+            /// CREATE MAPPER id EQUATION NORMALIZE value1 value2
             case "EQUATION_NORMALIZE":
                 normalizeEquation(id, Integer.parseInt(map.get("mapTypeValueOne")),
                                   Integer.parseInt(map.get("mapTypeValueTwo")));
                 break;
+            /// CREATE MAPPER id INTERPOLATION SPLINE DEFINITION string
             case "INTERPOLATION_LINEAR":
                 linearInterpolation(id, Filespec.make(map.get("definition")));
                 break;
+            /// CREATE MAPPER id INTERPOLATION SPLINE DEFINITION string
             case "INTERPOLATION_SPLINE":
                 splineInterpolation(id, Filespec.make(map.get("definition")));
                 break;
             default:
-                System.out.println("Something is up!!!");
-                break;
+                throw new IOException("Invalid map type provided");
         }
     }
 
     /**
+     * Recursively parse through the command.
      *
-     * @param arg
-     * @param map
-     * @return
+     * @param arg Index of command argument to reference.
+     * @param map Hashmap to store identify information of the given command.
+     * @return    The Hashmap.
      */
-    private HashMap<String, String> recParser(int arg, HashMap<String, String> map) {
+    private HashMap<String, String> recParser(int arg, HashMap<String, String> map)
+            throws IOException {
         if (arg > numOfCmdArgs) {
             return map;
         }
@@ -82,9 +87,11 @@ public class MapperParser implements SubParser {
             case "INTERPOLATION":
                 map.put("mapType", mapType + "_" + args[arg]);
                 break;
+            /// CREATE MAPPER id EQUATION SCALE value
             case "EQUATION_SCALE":
                 map.put("mapTypeValueOne", args[arg]);
                 break;
+            /// CREATE MAPPER id EQUATION NORMALIZE value1 value2
             case "EQUATION_NORMALIZE":
                 if (! map.containsKey("mapTypeValueOne")) {
                     map.put("mapTypeValueOne", args[arg]);
@@ -92,17 +99,17 @@ public class MapperParser implements SubParser {
                     map.put("mapTypeValueTwo", args[arg]);
                 }
                 break;
+            /// CREATE MAPPER id INTERPOLATION (LINEAR | SPLINE) DEFINITION string
             case "INTERPOLATION_LINEAR":
             case "INTERPOLATION_SPLINE":
                 if (args[arg].equalsIgnoreCase("DEFINITION") && ++arg <= numOfCmdArgs) {
                     map.put("definition", args[arg]);
                 } else {
-                    System.out.println("Invalid map type provided!!!");
+                    throw new IOException("Invalid map type provided");
                 }
                 break;
             default:
-                System.out.println("Invalid map type provided!!!");
-                break;
+                throw new IOException("Invalid map type provided");
         }
 
         return recParser(++arg, map);
@@ -112,9 +119,9 @@ public class MapperParser implements SubParser {
      * Creates mapper id that does not remap the raw value. This is equivalent to CREATE
      * MAPPER id EQUATION SCALE 1.
      *
-     * @param id ...
+     * @param id Name of the mapper object to be created.
      */
-    private void passthroughEquation(Identifier id) {
+    private void passThroughEquation(Identifier id) {
         EquationPassthrough newMapper      = new EquationPassthrough();
         MapperEquation      mapperEquation = new MapperEquation(newMapper);
         parserHelper.getSymbolTableMapper().add(id, mapperEquation);
@@ -123,8 +130,8 @@ public class MapperParser implements SubParser {
     /**
      * Creates mapper id that remaps the raw value by the linear coefficient value.
      *
-     * @param id    ...
-     * @param value ...
+     * @param id    Name of the mapper object to be created.
+     * @param value The linear coefficient value passed to the mapper.
      */
     private void scaleEquation(Identifier id, int value) {
         EquationScaled newMapper      = new EquationScaled(value);
@@ -136,9 +143,9 @@ public class MapperParser implements SubParser {
      * Creates mapper id that remaps the raw value onto a percentage scale as defined by
      * the lower limit valueOne and upper limit valueTwo.
      *
-     * @param id       ...
-     * @param valueOne ...
-     * @param valueTwo ...
+     * @param id       Name of the mapper object to be created.
+     * @param valueOne Lower limit of the mapper.
+     * @param valueTwo Upper limit of the mapper.
      */
     private void normalizeEquation(Identifier id, int valueOne, int valueTwo) {
         EquationNormalized newMapper      = new EquationNormalized(valueOne, valueTwo);
@@ -153,9 +160,9 @@ public class MapperParser implements SubParser {
      * mapped value. LINEAR mode does linear interpolation; SPLINE does a smoother
      * nonlinear interpolation.
      *
-     * @param id           ...
-     * @param filename     ...
-     * @throws IOException ...
+     * @param id           Name of the mapper object to be created.
+     * @param filename     Name of the file to be used.
+     * @throws IOException Invalid input.
      */
     private void linearInterpolation(Identifier id, Filespec filename)
             throws IOException {
@@ -172,9 +179,9 @@ public class MapperParser implements SubParser {
      * mapped value. LINEAR mode does linear interpolation; SPLINE does a smoother
      * nonlinear interpolation.
      *
-     * @param id           ...
-     * @param filename     ...
-     * @throws IOException ...
+     * @param id           Identifier for the command type.
+     * @param filename     Name of the file to be used.
+     * @throws IOException Invalid input.
      */
     private void splineInterpolation(Identifier id, Filespec filename)
             throws IOException {
