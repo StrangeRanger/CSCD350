@@ -18,8 +18,8 @@ Below is a list of who did what tests.
 ## Test A.1: Basic Actuator Creation
 
 1. This test is to verify that the ActuatorParser is properly parsing the command and creating an actuator. This will help us in assuring that the actuator is created and actually has the correct parameters.
-2. An actuator is created with specific values. We then check if its values are matching with what we input into the parser. 
-3. Code below: 
+2. An actuator is created with specific values. We then check if its values are matching with what we input into the parser.
+3. Code below:
     ```java
     startup.parse("CREATE ACTUATOR LINEAR a1 ACCELERATION LEADIN 0.1 LEADOUT -0.2 RELAX 0.3 "
                   + "VELOCITY LIMIT 5 VALUE MIN 1 MAX 20 INITIAL 2 JERK LIMIT 3");
@@ -29,27 +29,27 @@ Below is a list of who did what tests.
 5. Output (manually formatted):
     ```txt
     SymbolTable{
-    	size=1 
-    	map={
-    		Identifier{name=myactuator1}=ActuatorPrototype{
-    			id=myactuator1 
-    			groups=[3,actuator,all] 
-    			controller=<none> 
-    			sensors=[] 
-    			value=2.0 
-    			valueSource=2.0 
-    			valueTarget=2.0 
-    			valueMin=1.0 
-    			valueMax=20.0 
-    			acceleration=0.0 
-    			accelerationLeadin=0.1 
-    			accelerationLeadout=-0.2 
-    			accelerationRelax=0.3 
-    			velocity=0.0 
-    			velocityLimit=5.0 
-    			inflectionJerkThreshold=3.0
-    		}
-    	}
+        size=1
+        map={
+            Identifier{name=myactuator1}=ActuatorPrototype{
+                id=myactuator1
+                groups=[3,actuator,all]
+                controller=<none>
+                sensors=[]
+                value=2.0
+                valueSource=2.0
+                valueTarget=2.0
+                valueMin=1.0
+                valueMax=20.0
+                acceleration=0.0
+                accelerationLeadin=0.1
+                accelerationLeadout=-0.2
+                accelerationRelax=0.3
+                velocity=0.0
+                velocityLimit=5.0
+                inflectionJerkThreshold=3.0
+            }
+        }
     }
     ```
 6. The actual output of this test prints out the contents of the Actuator SymbolTable. While this does prove that the actuator has been created, it also contains other information not needed for this test.
@@ -60,7 +60,7 @@ Below is a list of who did what tests.
 1. This test is to verify that the actuator actually performs as intended. If this doesn't work, then the simulator doesn't simulate anything and will likely get stuck.
 2. An actuator is created with specific values. We check its value then send a message to request a new position. We then check if its targeted position has changed and whether it has begun to move. We can check the programs output when it completes to view the actuators path.
 3. Code below:
-    ```java 
+    ```java
     startup.parse("CREATE ACTUATOR LINEAR myactuator1 ACCELERATION LEADIN 0.1 LEADOUT -0.2 RELAX 0.3 "
                   + "VELOCITY LIMIT 5 VALUE MIN 1 MAX 20 INITIAL 2 JERK LIMIT 3");
     System.out.println(startup._parserHelper.getSymbolTableActuator().toString());
@@ -74,89 +74,89 @@ Below is a list of who did what tests.
     PARSE> CREATE ACTUATOR LINEAR myactuator1 ACCELERATION LEADIN 0.1 LEADOUT -0.2 RELAX 0.3 VELOCITY LIMIT 5 VALUE MIN 1 MAX 20 INITIAL 2 JERK LIMIT 3
     OUTPUT   | WRITING ACTUATOR myactuator1 OUTPUT TO C:\Users\sammy\AppData\Local\Temp
     SymbolTable{
-    	size=1 
-    	map={
-    		Identifier{name=myactuator1}=ActuatorPrototype{
-    			id=myactuator1
-    			groups=[3,actuator,all] 
-    			controller=<none> 
-    			sensors=[] 
-    			value=2.0 
-    			valueSource=2.0 
-    			valueTarget=2.0 
-    			valueMin=1.0 
-    			valueMax=20.0 
-    			acceleration=0.0 
-    			accelerationLeadin=0.1 
-    			accelerationLeadout=-0.2 
-    			accelerationRelax=0.3 
-    			velocity=0.0 
-    			velocityLimit=5.0 
-    			inflectionJerkThreshold=3.0
-    		}
-    	}
-    }
-    PARSE> SEND MESSAGE ID myactuator1 POSITION REQUEST 15
-    OUTPUT   | CONTROLLER myControllerMaster RECEIVED FROM BELOW MessageActuatorRequestPosition{
-    	messageIndex=1
-    	originatorID=cli 
-    	redirectorID=cli 
-    	recipientIDs=[myactuator1] 
-    	recipientGroups=[] 
-    	handlingController= 
-    	receivedByIDs=[] 
-    	priority=NORMAL 
-    	reportMode=E_ReportMode{
-    		isAcknowledged=false 
-    		isStarted=false 
-    		isRestarted=false 
-    		isUpdating=false 
-    		isInterrupting=false 
-    		isInterrupted=false 
-    		isTerminated=false 
-    		isEnded=false
-    	}
-    	interruptPolicy=CONTINUE
-    	submittedTick=1
-    }
-    SymbolTable{
-    	size=1 
-    	map={
-    		Identifier{name=myactuator1}=ActuatorPrototype{
-    			id=myactuator1 
-    			groups=[3,actuator,all] 
-    			controller=<none> 
-    			sensors=[]
-                value=2.0 
-                valueSource=2.0 
-                valueTarget=2.0
-                valueMin=1.0 
-                valueMax=20.0 
-                acceleration=0.0 
-                accelerationLeadin=0.1 
-                accelerationLeadout=-0.2 
-                accelerationRelax=0.3 
-                velocity=0.0
-                velocityLimit=5.0 
-                inflectionJerkThreshold=3.0
-    		}
-    	}
-    }
-    SymbolTable{
-    	size=1 
-    	map={
-    		Identifier{name=myactuator1}=ActuatorPrototype{
-    			id=myactuator1
+        size=1
+        map={
+            Identifier{name=myactuator1}=ActuatorPrototype{
+                id=myactuator1
                 groups=[3,actuator,all]
                 controller=<none>
                 sensors=[]
                 value=2.0
-                valueSource=2.0 
-                valueTarget=2.0 
+                valueSource=2.0
+                valueTarget=2.0
                 valueMin=1.0
                 valueMax=20.0
                 acceleration=0.0
-                accelerationLeadin=0.1 
+                accelerationLeadin=0.1
+                accelerationLeadout=-0.2
+                accelerationRelax=0.3
+                velocity=0.0
+                velocityLimit=5.0
+                inflectionJerkThreshold=3.0
+            }
+        }
+    }
+    PARSE> SEND MESSAGE ID myactuator1 POSITION REQUEST 15
+    OUTPUT   | CONTROLLER myControllerMaster RECEIVED FROM BELOW MessageActuatorRequestPosition{
+        messageIndex=1
+        originatorID=cli
+        redirectorID=cli
+        recipientIDs=[myactuator1]
+        recipientGroups=[]
+        handlingController=
+        receivedByIDs=[]
+        priority=NORMAL
+        reportMode=E_ReportMode{
+            isAcknowledged=false
+            isStarted=false
+            isRestarted=false
+            isUpdating=false
+            isInterrupting=false
+            isInterrupted=false
+            isTerminated=false
+            isEnded=false
+        }
+        interruptPolicy=CONTINUE
+        submittedTick=1
+    }
+    SymbolTable{
+        size=1
+        map={
+            Identifier{name=myactuator1}=ActuatorPrototype{
+                id=myactuator1
+                groups=[3,actuator,all]
+                controller=<none>
+                sensors=[]
+                value=2.0
+                valueSource=2.0
+                valueTarget=2.0
+                valueMin=1.0
+                valueMax=20.0
+                acceleration=0.0
+                accelerationLeadin=0.1
+                accelerationLeadout=-0.2
+                accelerationRelax=0.3
+                velocity=0.0
+                velocityLimit=5.0
+                inflectionJerkThreshold=3.0
+            }
+        }
+    }
+    SymbolTable{
+        size=1
+        map={
+            Identifier{name=myactuator1}=ActuatorPrototype{
+                id=myactuator1
+                groups=[3,actuator,all]
+                controller=<none>
+                sensors=[]
+                value=2.0
+                valueSource=2.0
+                valueTarget=2.0
+                valueMin=1.0
+                valueMax=20.0
+                acceleration=0.0
+                accelerationLeadin=0.1
                 accelerationLeadout=-0.2
                 accelerationRelax=0.3
                 velocity=0.0
@@ -232,14 +232,14 @@ Below is a list of who did what tests.
    PARSE> @CONFIGURE LOG "a.txt" DOT SEQUENCE "b.txt" NETWORK "c.txt" XML "d.txt"
    PARSE> CREATE REPORTER CHANGE R1 NOTIFY IDS A1 DELTA 10
    SymbolTable{
-   	size=1
-   	map={
-   		Identifier{name=R1}=ReporterChange{
-   			deltaThreshold=10
-   			reportingIDs=[A1] 
-   			reportingGroups=[]
-   		}
-   	}
+    size=1
+    map={
+        Identifier{name=R1}=ReporterChange{
+            deltaThreshold=10
+            reportingIDs=[A1]
+            reportingGroups=[]
+        }
+    }
    }
    PARSE> @exit
    EXITING  |
