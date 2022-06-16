@@ -228,18 +228,18 @@ Below is a list of who did what tests.
    ```
 4. The expected result is that the reporter object is created and placed into the symbol table.
 5. Output (manually formatted):
-   ```txt
-   PARSE> @CONFIGURE LOG "a.txt" DOT SEQUENCE "b.txt" NETWORK "c.txt" XML "d.txt"
-   PARSE> CREATE REPORTER CHANGE R1 NOTIFY IDS A1 DELTA 10
-   SymbolTable{
-    size=1
-    map={
-        Identifier{name=R1}=ReporterChange{
-            deltaThreshold=10
-            reportingIDs=[A1]
-            reportingGroups=[]
+    ```txt
+    PARSE> @CONFIGURE LOG "a.txt" DOT SEQUENCE "b.txt" NETWORK "c.txt" XML "d.txt"
+    PARSE> CREATE REPORTER CHANGE R1 NOTIFY IDS A1 DELTA 10
+    SymbolTable{
+        size=1
+        map={
+            Identifier{name=R1}=ReporterChange{
+                deltaThreshold=10
+                reportingIDs=[A1]
+                reportingGroups=[]
+            }
         }
-    }
    }
    PARSE> @exit
    EXITING  |
