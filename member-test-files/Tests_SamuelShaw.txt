@@ -1,11 +1,35 @@
 Test A.1: Basic Actuator Creation
 	1. This test is to verify that the ActuatorParser is properly parsing the command and creating an actuator. This will help us in assuring that the actuator is created and actually has the correct parameters.
 	2. There is no Actuator created and no other objects should affect the creation of a new actuator.
-	3.	"CREATE ACTUATOR LINEAR a1 ACCELERATION LEADIN 0.1 LEADOUT -0.2 RELAX 0.3 VELOCITY LIMIT 5 VALUE MIN 1 MAX 20 INITIAL 2 JERK LIMIT 3"		System.out.println(startup._parserHelper.getSymbolTableActuator().toString());
+	3.	"CREATE ACTUATOR LINEAR a1 ACCELERATION LEADIN 0.1 LEADOUT -0.2 RELAX 0.3 VELOCITY LIMIT 5 VALUE MIN 1 MAX 20 INITIAL 2 JERK LIMIT 3"		
+		System.out.println(startup._parserHelper.getSymbolTableActuator().toString());
 	4. There should be a string output to the console that shows that the properties of the actuator have been properly set.
 	5. SymbolTable{size=1 map={Identifier{name=myactuator1}=ActuatorPrototype{id=myactuator1 groups=[3,actuator,all] controller=<none> sensors=[] value=2.0 valueSource=2.0 valueTarget=2.0 valueMin=1.0 valueMax=20.0 acceleration=0.0 accelerationLeadin=0.1 accelerationLeadout=-0.2 accelerationRelax=0.3 velocity=0.0 velocityLimit=5.0 inflectionJerkThreshold=3.0}}}
 	6. The actual output of this test prints out the contents of the Actuator SymbolTable. While this does prove that the actuator has been created, it also contains other information not needed for this test.
 	7. Include a previously created sensor in the creation of the actuator.
 	
 Test A.2: Basic Actuator Manipulation
-	1.
+	1. This test is to verify that the actuator actually performs as intended. If this doesn't work, then the simulator doesn't simulate anything and will likely get stuck.
+	2. The actuator from test A.1 has yet to be created and there is no network established besides the one from initializaiton.
+	3. startup.parse("CREATE ACTUATOR LINEAR myactuator1 ACCELERATION LEADIN 0.1 LEADOUT -0.2 RELAX 0.3 VELOCITY LIMIT 5 VALUE MIN 1 MAX 20 INITIAL 2 JERK LIMIT 3");
+		System.out.println(startup._parserHelper.getSymbolTableActuator().toString());
+		startup.parse("SEND MESSAGE ID myactuator1 POSITION REQUEST 15");
+		System.out.println(startup._parserHelper.getSymbolTableActuator().toString());
+		System.out.println(startup._parserHelper.getSymbolTableActuator().toString());
+	4. The actuator will be created and we can prove it with the second line of the test. With the fourth line of the test we can verify that the target position has been set and that the actuator is moving towards its target.
+	5. PARSE> CREATE ACTUATOR LINEAR myactuator1 ACCELERATION LEADIN 0.1 LEADOUT -0.2 RELAX 0.3 VELOCITY LIMIT 5 VALUE MIN 1 MAX 20 INITIAL 2 JERK LIMIT 3
+		OUTPUT   | WRITING ACTUATOR myactuator1 OUTPUT TO C:\Users\sammy\AppData\Local\Temp
+		SymbolTable{size=1 map={Identifier{name=myactuator1}=ActuatorPrototype{id=myactuator1 groups=[3,actuator,all] controller=<none> sensors=[] value=2.0 valueSource=2.0 valueTarget=2.0 valueMin=1.0 valueMax=20.0 acceleration=0.0 accelerationLeadin=0.1 accelerationLeadout=-0.2 accelerationRelax=0.3 velocity=0.0 velocityLimit=5.0 inflectionJerkThreshold=3.0}}}
+		PARSE> SEND MESSAGE ID myactuator1 POSITION REQUEST 15
+		OUTPUT   | CONTROLLER myControllerMaster RECEIVED FROM BELOW MessageActuatorRequestPosition{messageIndex=1 originatorID=cli redirectorID=cli recipientIDs=[myactuator1] recipientGroups=[] handlingController= receivedByIDs=[] priority=NORMAL reportMode=E_ReportMode{isAcknowledged=false isStarted=false isRestarted=false isUpdating=false isInterrupting=false isInterrupted=false isTerminated=false isEnded=false} interruptPolicy=CONTINUE submittedTick=1}
+		SymbolTable{size=1 map={Identifier{name=myactuator1}=ActuatorPrototype{id=myactuator1 groups=[3,actuator,all] controller=<none> sensors=[] value=2.0 valueSource=2.0 valueTarget=2.0 valueMin=1.0 valueMax=20.0 acceleration=0.0 accelerationLeadin=0.1 accelerationLeadout=-0.2 accelerationRelax=0.3 velocity=0.0 velocityLimit=5.0 inflectionJerkThreshold=3.0}}}
+		SymbolTable{size=1 map={Identifier{name=myactuator1}=ActuatorPrototype{id=myactuator1 groups=[3,actuator,all] controller=<none> sensors=[] value=2.0 valueSource=2.0 valueTarget=2.0 valueMin=1.0 valueMax=20.0 acceleration=0.0 accelerationLeadin=0.1 accelerationLeadout=-0.2 accelerationRelax=0.3 velocity=0.0 velocityLimit=5.0 inflectionJerkThreshold=3.0}}}
+		TIME     | 0.02
+		TIME     | 0.03
+		TIME     | 0.04
+		.
+		.
+		.
+	6. The target position does not get properly set even though a message is sent and recieved properly. This might be due to the controller class not being complete.
+	7. Add a command to switch the target position after it has already been set, to verify that the actuator swithes directions or targets correctly.
+	
