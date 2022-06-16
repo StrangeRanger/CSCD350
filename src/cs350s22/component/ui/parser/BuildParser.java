@@ -29,13 +29,13 @@ public class BuildParser implements SubParser {
 
 		if (args[index].equalsIgnoreCase("NETWORK")) {
 			index = 4;
-			if (index < args.length && index + 1 == args.length) {
+			if (index < args.length) {
 				components.add(parserHelper.getSymbolTableController().get(Identifier.make(args[index])));
 				index++;
-				if (index < args.length && index + 1 == args.length) {
+				if (index < args.length) {
 					components.add(parserHelper.getSymbolTableActuator().get(Identifier.make(args[index])));
 					index++;
-					if (index < args.length && index + 1 == args.length) {
+					if (index < args.length) {
 						components.add(parserHelper.getSymbolTableSensor().get(Identifier.make(args[index])));
 					}
 				}

@@ -88,6 +88,7 @@ public class SendParser implements SubParser {
 					}
 				}
 			default:
+				index++;
 				break;
 			}
 		}
